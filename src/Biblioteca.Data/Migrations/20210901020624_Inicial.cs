@@ -3,10 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Biblioteca.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Alunos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Nome = table.Column<string>(type: "varchar(200)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Alunos", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Autores",
                 columns: table => new
@@ -17,25 +29,6 @@ namespace Biblioteca.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Autores", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Enderecos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AlunoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Logradouro = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Numero = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Complemento = table.Column<string>(type: "varchar(250)", nullable: true),
-                    Cep = table.Column<string>(type: "varchar(8)", nullable: false),
-                    Bairro = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Cidade = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Estado = table.Column<string>(type: "varchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Enderecos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,46 +49,28 @@ namespace Biblioteca.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Alunos",
+                name: "Enderecos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nome = table.Column<string>(type: "varchar(200)", nullable: false),
-                    EnderecoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AlunoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Logradouro = table.Column<string>(type: "varchar(200)", nullable: false),
+                    Numero = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Complemento = table.Column<string>(type: "varchar(250)", nullable: true),
+                    Cep = table.Column<string>(type: "varchar(8)", nullable: false),
+                    Bairro = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Cidade = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Estado = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Alunos", x => x.Id);
+                    table.PrimaryKey("PK_Enderecos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Alunos_Enderecos_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Enderecos",
+                        name: "FK_Enderecos_Alunos_AlunoId",
+                        column: x => x.AlunoId,
+                        principalTable: "Alunos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Escritos",
-                columns: table => new
-                {
-                    AutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LivroId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Escritos", x => new { x.AutorId, x.LivroId });
-                    table.ForeignKey(
-                        name: "FK_Escritos_Autores_AutorId",
-                        column: x => x.AutorId,
-                        principalTable: "Autores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_Escritos_Livros_AutorId",
-                        column: x => x.AutorId,
-                        principalTable: "Livros",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,20 +91,38 @@ namespace Biblioteca.Data.Migrations
                         column: x => x.AlunoId,
                         principalTable: "Alunos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Emprestimos_Livros_LivroId",
                         column: x => x.LivroId,
                         principalTable: "Livros",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Alunos_EnderecoId",
-                table: "Alunos",
-                column: "EnderecoId",
-                unique: true);
+            migrationBuilder.CreateTable(
+                name: "Escritos",
+                columns: table => new
+                {
+                    AutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LivroId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Escritos", x => new { x.AutorId, x.LivroId });
+                    table.ForeignKey(
+                        name: "FK_Escritos_Autores_AutorId",
+                        column: x => x.AutorId,
+                        principalTable: "Autores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Escritos_Livros_AutorId",
+                        column: x => x.AutorId,
+                        principalTable: "Livros",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Emprestimos_AlunoId",
@@ -140,12 +133,21 @@ namespace Biblioteca.Data.Migrations
                 name: "IX_Emprestimos_LivroId",
                 table: "Emprestimos",
                 column: "LivroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Enderecos_AlunoId",
+                table: "Enderecos",
+                column: "AlunoId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Emprestimos");
+
+            migrationBuilder.DropTable(
+                name: "Enderecos");
 
             migrationBuilder.DropTable(
                 name: "Escritos");
@@ -158,9 +160,6 @@ namespace Biblioteca.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Livros");
-
-            migrationBuilder.DropTable(
-                name: "Enderecos");
         }
     }
 }

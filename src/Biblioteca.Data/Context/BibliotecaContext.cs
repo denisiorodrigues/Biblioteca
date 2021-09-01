@@ -9,7 +9,7 @@ namespace Biblioteca.Data.Context
 {
     public class BibliotecaContext : DbContext
     {
-        public BibliotecaContext(DbContextOptions options) : base(options)
+        public BibliotecaContext(DbContextOptions<BibliotecaContext> options) : base(options)
         { }
 
         public DbSet<Aluno> Alunos { get; set; }
@@ -27,7 +27,7 @@ namespace Biblioteca.Data.Context
             //Deletando delete on cascate
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys()))
             {
-                relationship.DeleteBehavior = DeleteBehavior.SetNull;
+                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
             }
 
             base.OnModelCreating(modelBuilder);

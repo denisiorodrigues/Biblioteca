@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Biblioteca.Data.Migrations
 {
     [DbContext(typeof(BibliotecaContext))]
-    [Migration("20210827023513_Initial")]
-    partial class Initial
+    [Migration("20210901020624_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,17 +27,11 @@ namespace Biblioteca.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EnderecoId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
 
                     b.ToTable("Alunos");
                 });
@@ -122,6 +116,9 @@ namespace Biblioteca.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AlunoId")
+                        .IsUnique();
+
                     b.ToTable("Enderecos");
                 });
 
@@ -170,29 +167,16 @@ namespace Biblioteca.Data.Migrations
                     b.ToTable("Livros");
                 });
 
-            modelBuilder.Entity("Biblioteca.Business.Models.Aluno", b =>
-                {
-                    b.HasOne("Biblioteca.Business.Models.Endereco", "Endereco")
-                        .WithOne("Aluno")
-                        .HasForeignKey("Biblioteca.Business.Models.Aluno", "EnderecoId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Endereco");
-                });
-
             modelBuilder.Entity("Biblioteca.Business.Models.Emprestimo", b =>
                 {
                     b.HasOne("Biblioteca.Business.Models.Aluno", "Aluno")
                         .WithMany("Emprestimos")
                         .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("Biblioteca.Business.Models.Livro", "Livro")
                         .WithMany("Emprestimos")
                         .HasForeignKey("LivroId")
-                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Aluno");
@@ -200,18 +184,26 @@ namespace Biblioteca.Data.Migrations
                     b.Navigation("Livro");
                 });
 
+            modelBuilder.Entity("Biblioteca.Business.Models.Endereco", b =>
+                {
+                    b.HasOne("Biblioteca.Business.Models.Aluno", "Aluno")
+                        .WithOne("Endereco")
+                        .HasForeignKey("Biblioteca.Business.Models.Endereco", "AlunoId")
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+                });
+
             modelBuilder.Entity("Biblioteca.Business.Models.Escrito", b =>
                 {
                     b.HasOne("Biblioteca.Business.Models.Autor", "Autor")
                         .WithMany("Livros")
                         .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("Biblioteca.Business.Models.Livro", "Livro")
                         .WithMany("Autores")
                         .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Autor");
@@ -222,16 +214,13 @@ namespace Biblioteca.Data.Migrations
             modelBuilder.Entity("Biblioteca.Business.Models.Aluno", b =>
                 {
                     b.Navigation("Emprestimos");
+
+                    b.Navigation("Endereco");
                 });
 
             modelBuilder.Entity("Biblioteca.Business.Models.Autor", b =>
                 {
                     b.Navigation("Livros");
-                });
-
-            modelBuilder.Entity("Biblioteca.Business.Models.Endereco", b =>
-                {
-                    b.Navigation("Aluno");
                 });
 
             modelBuilder.Entity("Biblioteca.Business.Models.Livro", b =>

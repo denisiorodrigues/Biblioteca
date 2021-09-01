@@ -22,8 +22,7 @@ namespace Biblioteca.Data.Mappings
 
             //Mapeamento de 1:1
             builder.HasOne(p => p.Endereco)
-                .WithOne(p => p.Aluno)
-                .HasForeignKey<Aluno>(f => f.EnderecoId);
+                .WithOne(p => p.Aluno);
 
             builder.ToTable("Alunos");
         }
