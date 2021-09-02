@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Biblioteca.Data.Context
 {
@@ -14,6 +15,12 @@ namespace Biblioteca.Data.Context
 
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Autor> Autores { get; set; }
+
+        internal Task<Task<IList<Emprestimo>>> AsNoTraking()
+        {
+            throw new NotImplementedException();
+        }
+
         public DbSet<Emprestimo> Emprestimos { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<Livro> Livros { get; set; }
