@@ -18,32 +18,29 @@ namespace Biblioteca.Data.Repository
 
         }
 
-        public async Task<IList<Aluno>> ObterAlunoEmprestimo(Guid id)
+        public async Task<Aluno> ObterAlunoEmprestimo(Guid id)
         {
             return await Context
                         .Alunos
                         .Include(x => x.Emprestimos)
-                        .Where(x => x.Id == id)
-                        .ToListAsync();
+                        .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IList<Aluno>> ObterAlunoEndereco(Guid id)
+        public async Task<Aluno> ObterAlunoEndereco(Guid id)
         {
             return await Context
                          .Alunos
                          .Include(x => x.Endereco)
-                         .Where(x => x.Id == id)
-                         .ToListAsync();
+                         .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IList<Aluno>> ObterAlunoEmprestimoEndereco(Guid id)
+        public async Task<Aluno> ObterAlunoEmprestimoEndereco(Guid id)
         {
             return await Context
                          .Alunos
                          .Include(x => x.Emprestimos)
                          .Include(x => x.Endereco)
-                         .Where(x => x.Id == id)
-                         .ToListAsync();
+                         .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
