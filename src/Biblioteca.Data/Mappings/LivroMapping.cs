@@ -1,9 +1,6 @@
 ﻿using Biblioteca.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Biblioteca.Data.Mappings
 {
@@ -24,9 +21,12 @@ namespace Biblioteca.Data.Mappings
                 .WithOne(p => p.Livro)
                 .HasForeignKey(p => p.LivroId);
 
+
+            //TODO: Delete cascade habilitado
             builder.HasMany(p => p.Autores)
                 .WithOne(p => p.Livro)
-                .HasForeignKey(p => p.AutorId);
+                .HasForeignKey(p => p.AutorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Livros");
         }

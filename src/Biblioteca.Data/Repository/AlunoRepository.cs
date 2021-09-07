@@ -38,7 +38,7 @@ namespace Biblioteca.Data.Repository
         {
             return await Context
                          .Alunos
-                         .Include(x => x.Emprestimos)
+                         .Include(x => x.Emprestimos.Select(e => e.Livro))
                          .Include(x => x.Endereco)
                          .FirstOrDefaultAsync(x => x.Id == id);
         }

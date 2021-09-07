@@ -17,6 +17,14 @@ namespace Biblioteca.Data.Repository
         {
         }
 
+        public async Task<bool> TemEmprestimo(Guid id)
+        {
+            return await Context.Livros
+                .AsNoTracking()
+                .Include(x => x.Emprestimos)
+                .AnyAsync(x => x.Id == id && x.Emprestimos.Count() > 1);
+        }
+
         public async Task<IList<Livro>> ObterLivroPorAutor(Guid id)
         {
             return await (from livro in Context.Livros

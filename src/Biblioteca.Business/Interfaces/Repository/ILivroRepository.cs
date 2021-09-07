@@ -9,5 +9,7 @@ namespace Biblioteca.Business.Interfaces.Repository
     public interface ILivroRepository : IRepository<Livro>
     {
         Task<IList<Livro>> ObterLivroPorAutor(Guid id);
+
+        Task<bool> TemEmprestimo(Guid id);
     }
 }

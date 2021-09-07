@@ -1,9 +1,6 @@
 ﻿using Biblioteca.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Biblioteca.Data.Mappings
 {
@@ -13,8 +10,9 @@ namespace Biblioteca.Data.Mappings
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(p => p.Data).IsRequired();
+            builder.Property(p => p.Data).IsRequired().HasDefaultValueSql("GETDATE()");
             builder.Property(p => p.Devolucao).IsRequired();
+            builder.Property(p => p.Devolvido);
 
             builder.HasOne(p => p.Aluno)
                 .WithMany(p => p.Emprestimos)

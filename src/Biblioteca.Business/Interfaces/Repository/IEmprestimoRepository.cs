@@ -10,5 +10,8 @@ namespace Biblioteca.Business.Interfaces.Repository
     {
         Task<IList<Emprestimo>> ObterPendenteDeDevolucao();
         Task<IList<Emprestimo>> ObterEmprestimoPorAluno(Guid id);
+        Task<IList<Emprestimo>> ObterEmprestimoPorLivro(Guid id);
+        Task<IList<Emprestimo>> ObterEmprestimoPedentePorAluno(Guid id);
+        Task<IList<Emprestimo>> ObterEmprestimoPedentePorLivro(Guid id);
     }
 }

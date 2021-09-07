@@ -13,5 +13,7 @@ namespace Biblioteca.Business.Models
 
         public DateTime Data { get; set; }
         public DateTime Devolucao { get; set; }
+
+        public DateTime? Devolvido { get; set; }
     }
 }
