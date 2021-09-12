@@ -3,6 +3,7 @@ using Biblioteca.Business.Models;
 using Biblioteca.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteca.Data.Repository
@@ -14,20 +15,19 @@ namespace Biblioteca.Data.Repository
 
         }
 
-        public async Task<Autor> ObterAutorLivros(Guid id)
-        {
-            return await Context.Autores
+        public async Task<bool> IsExiste(string nome) => await Context.Autores
                         .AsNoTracking()
-                        .Include(x => x.Livros)
-                        .FirstOrDefaultAsync(x => x.Id == id );
-        }
+                        .Where(x => !string.IsNullOrEmpty(nome) && x.Nome.Contains(nome.TrimEnd().TrimStart()))
+                        .AnyAsync();
 
-        public async Task<Autor> ObterPorNome(string nome)
-        {
-            return await Context.Autores
+        public async Task<Autor> ObterAutorLivros(Guid id) => await Context.Autores
                         .AsNoTracking()
                         .Include(x => x.Livros)
-                        .FirstOrDefaultAsync(x => x.Nome.Contains(nome));
-        }
+                        .FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task<Autor> ObterPorNome(string nome) => await Context.Autores
+                        .AsNoTracking()
+                        .Include(x => x.Livros)
+                        .FirstOrDefaultAsync(x => x.Nome.ToLower().Contains(nome.ToLower().TrimEnd().TrimStart()));
     }
 }

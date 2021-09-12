@@ -8,6 +8,8 @@ namespace Biblioteca.Business.Interfaces.Repository
 {
     public interface IAutorRepository : IRepository<Autor>
     {
+        Task<bool> IsExiste(string nome);
+        
         Task<Autor> ObterAutorLivros(Guid id);
 
         Task<Autor> ObterPorNome(string nome);

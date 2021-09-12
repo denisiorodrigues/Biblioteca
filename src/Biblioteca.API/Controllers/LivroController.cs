@@ -45,36 +45,35 @@ namespace Biblioteca.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<IEnumerable<LivroDTO>>> ObterLivroAutor(Guid id)
         {
-            var livros =  await ObterLivroAutor(id);
+            var livrosDTO = await ObterLivroAutor(id);
 
-            if(livros == null) BadRequest();
+            if(livrosDTO == null) NotificarErro("Livro não encontrado");
             
-            return Ok(livros);
+            return CustomResponse(livrosDTO);
         }
 
         [HttpPost]
         public async Task<ActionResult<LivroDTO>> Cadastrar(LivroDTO livroDTO)
         {
-            if(!ModelState.IsValid) return BadRequest();
+            if(!ModelState.IsValid) return CustomResponse();
 
             var livro = _mapper.Map<Livro>(livroDTO);
             await _livroService.Adicionar(livro);
 
-            return Ok(livroDTO);
+            return CustomResponse(livroDTO);
         }
 
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<LivroDTO>> Atualizar(Guid id, LivroDTO livroDTO)
         {
-            if(id != livroDTO.Id) return BadRequest(0);
+            if(id != livroDTO.Id) return BadRequest();
 
-            if(!ModelState.IsValid) return BadRequest();
+            if(!ModelState.IsValid) return CustomResponse();
 
             var livro = _mapper.Map<Livro>(livroDTO);
-
             await _livroService.Atualizar(livro);
 
-            return Ok(livroDTO);
+            return CustomResponse(livroDTO);
         }
 
         [HttpDelete("{id:guid}")]
@@ -86,7 +85,7 @@ namespace Biblioteca.API.Controllers
 
             await _livroRepository.Remover(id);
 
-            return Ok(livro);
+            return CustomResponse(livro);
         }
 
         private async Task<IEnumerable<LivroDTO>> ObterLivrosAutores(Guid id)

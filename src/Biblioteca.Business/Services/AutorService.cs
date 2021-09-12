@@ -19,14 +19,26 @@ namespace Biblioteca.Business.Services
             _autorRepository = autorRepository;
         }
 
-        public async Task Adicionar(Autor aluno)
+        public async Task Adicionar(Autor autor)
         {
-            await _autorRepository.Adicionar(aluno);
+            if (await IsExiste(autor.Nome))
+            {
+                Notificar($"Já existe um autor cadastrado com o nome {autor.Nome.ToUpper()}");
+                return;
+            }
+            
+            await _autorRepository.Adicionar(autor);
         }
 
-        public async Task Atualizar(Autor aluno)
+        public async Task Atualizar(Autor autor)
         {
-            await _autorRepository.Atualizar(aluno);
+            if (await IsExiste(autor.Nome))
+            {
+                Notificar($"Já existe um autor cadastrado com o nome {autor.Nome.ToUpper()}");
+                return;
+            }
+            
+            await _autorRepository.Atualizar(autor);
         }
 
         public async Task Remover(Guid id)
@@ -39,6 +51,11 @@ namespace Biblioteca.Business.Services
             }
             
             await _autorRepository.Remover(id);
+        }
+
+        public async Task<bool> IsExiste(string nome)
+        {
+            return await _autorRepository.IsExiste(nome);
         }
 
         public void Dispose()

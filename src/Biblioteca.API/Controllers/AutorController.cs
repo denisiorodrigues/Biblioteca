@@ -47,10 +47,10 @@ namespace Biblioteca.API.Controllers
                 return NotFound();
             }
 
-            return Ok(autor);
+            return CustomResponse(autor);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> PutAutor(Guid id, AutorDTO autorDTO)
         {
             if (id != autorDTO.Id)
@@ -60,48 +60,48 @@ namespace Biblioteca.API.Controllers
         
             if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return CustomResponse(ModelState);
+            }
+
+            if (await ObterAutor(id) == null)
+            {
+                return NotFound();
             }
 
             var autor = _mapper.Map<Autor>(autorDTO);
             await _autorService.Atualizar(autor);
 
-            return NoContent();
+            return CustomResponse(autorDTO);
         }
 
         [HttpPost]
         public async Task<ActionResult<AutorDTO>> PostAutor(AutorDTO autorDTO)
         {
-            if(!ModelState.IsValid)
+            if(!ModelState.IsValid) 
             {
-                return BadRequest();
+                return CustomResponse(ModelState);
             }
 
             var autor = _mapper.Map<Autor>(autorDTO);
-            
             await _autorService.Adicionar(autor);
+            autorDTO.Id = autorDTO.Id;
 
-            return CreatedAtAction(nameof(GetAutor), new { id = autor.Id }, autor);
+            //return CreatedAtAction(nameof(GetAutor), new { id = autor.Id }, autor);
+            return CustomResponse(autorDTO);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteAutor(Guid id)
         {
-            var autor = await ObterAutor(id);
-            if (autor == null)
+            var autorDTO = await ObterAutor(id);
+            if (autorDTO == null)
             {
                 return NotFound();
             }
 
-            if(autor.Livros.Any())
-            {
-                //Notificar("O autor possui livro cadastrado");
-                return BadRequest();
-            }
-
             await _autorService.Remover(id);
 
-            return Ok(autor);
+            return CustomResponse(autorDTO);
         }
 
         private async Task<AutorDTO> ObterAutor(Guid id)

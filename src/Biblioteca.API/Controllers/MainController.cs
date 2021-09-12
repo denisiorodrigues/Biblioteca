@@ -65,7 +65,7 @@ namespace Biblioteca.API.Controllers
             var erros = modelState.Values.SelectMany(x => x.Errors);
             foreach (var erro in erros)
             {
-                var erroMsg = erro.Exception == null ? erro.Exception.Message : erro.ErrorMessage;
+                var erroMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
                 NotificarErro(erroMsg);
             }
         }
