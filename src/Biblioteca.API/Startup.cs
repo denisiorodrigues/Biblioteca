@@ -44,6 +44,11 @@ namespace Biblioteca.API
             services.AddControllers();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
+            //Desabilitando a validação automática doa campos para ter mais controle das validações
+            services.Configure<ApiBehaviorOptions>(options => {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.ResolveDependencies();
         }
 
