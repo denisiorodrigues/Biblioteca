@@ -1,4 +1,6 @@
+using Biblioteca.API.Configuration;
 using Biblioteca.Data.Context;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,12 +30,21 @@ namespace Biblioteca.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BibliotecaContext>( options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddControllers();
+            services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
 
+            services.AddDbContext<BibliotecaContext>( options => 
+            {
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"));
+            });
+            
+            //Primeira configuração do Automapper
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllers();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<BibliotecaContext>();
+            
+            services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +60,8 @@ namespace Biblioteca.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

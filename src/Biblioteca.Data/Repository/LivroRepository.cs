@@ -25,13 +25,24 @@ namespace Biblioteca.Data.Repository
                 .AnyAsync(x => x.Id == id && x.Emprestimos.Count() > 1);
         }
 
-        public async Task<IList<Livro>> ObterLivroPorAutor(Guid id)
+        public async Task<IEnumerable<Livro>> ObterLivroPorAutor(Guid id)
         {
             return await (from livro in Context.Livros
                           join escrito in Context.Escritos on livro.Id equals escrito.LivroId
                           join autor in Context.Autores on escrito.AutorId equals autor.Id
                           where autor.Id == id
                           select livro).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Livro>> ObterLivrosAutores(Guid id)
+        {
+            return await Context.Livros
+                        .AsNoTracking()
+                        .Include(x => x.Emprestimos)
+                        .Include(x => x.Autores)
+                        .ThenInclude(x => x.Autor)
+                        .Where(x => x.Id == id)
+                        .ToListAsync();
         }
     }
 }

@@ -14,15 +14,13 @@ namespace Biblioteca.Data.Context
         { }
 
         public DbSet<Aluno> Alunos { get; set; }
+
         public DbSet<Autor> Autores { get; set; }
 
-        internal Task<Task<IList<Emprestimo>>> AsNoTraking()
-        {
-            throw new NotImplementedException();
-        }
-
         public DbSet<Emprestimo> Emprestimos { get; set; }
+
         public DbSet<Endereco> Enderecos { get; set; }
+
         public DbSet<Livro> Livros { get; set; }
 
         public DbSet<Escrito> Escritos { get; set; }
