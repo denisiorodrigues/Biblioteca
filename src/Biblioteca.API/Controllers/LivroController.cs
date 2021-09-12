@@ -11,6 +11,7 @@ using Biblioteca.Business.Interfaces.Repository;
 using AutoMapper;
 using Biblioteca.API.DTO;
 using Biblioteca.Business.Interfaces.Services;
+using Biblioteca.Business.Interfaces;
 
 namespace Biblioteca.API.Controllers
 {
@@ -24,7 +25,9 @@ namespace Biblioteca.API.Controllers
 
         public LivroController(ILivroRepository livroRepository,
                                 ILivroService livroService,
+                                INotificador notificador,
                                 IMapper mapper)
+        :base(notificador)
         {
             _livroRepository = livroRepository;
             _livroService = livroService;

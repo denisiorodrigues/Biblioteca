@@ -8,6 +8,7 @@ using Biblioteca.Business.Interfaces.Repository;
 using AutoMapper;
 using Biblioteca.API.DTO;
 using Biblioteca.Business.Interfaces.Services;
+using Biblioteca.Business.Interfaces;
 
 namespace Biblioteca.API.Controllers
 {
@@ -21,7 +22,9 @@ namespace Biblioteca.API.Controllers
 
         public AutorController(IAutorRepository autorRepository,
                                 IAutorService autorService,
+                                INotificador notificador,
                                 IMapper mapper)
+        :base(notificador)
         {
             _autorRepository = autorRepository;
             _autorService = autorService;
@@ -67,12 +70,14 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Autor>> PostAutor(Autor autor)
+        public async Task<ActionResult<AutorDTO>> PostAutor(AutorDTO autorDTO)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest();
             }
+
+            var autor = _mapper.Map<Autor>(autorDTO);
             
             await _autorService.Adicionar(autor);
 
