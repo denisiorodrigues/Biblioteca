@@ -28,7 +28,8 @@ namespace Biblioteca.API.DTO
         [Required(ErrorMessage = "O campo {0} é orbigatório")]
         public int Situacao { get; set; }
 
-        public IEnumerable<AutorDTO> Autores { get; set; }
+        public IEnumerable<EscritoDTO> Autores { get; set; }
+
         public IEnumerable<EmprestimoDTO> Emprestimos { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace Biblioteca.API.Controllers
         [HttpPost]
         public async Task<ActionResult<LivroDTO>> Cadastrar(LivroDTO livroDTO)
         {
-            if(!ModelState.IsValid) return CustomResponse();
+            if(!ModelState.IsValid) return CustomResponse(ModelState);
 
             var livro = _mapper.Map<Livro>(livroDTO);
             await _livroService.Adicionar(livro);
@@ -68,7 +68,7 @@ namespace Biblioteca.API.Controllers
         {
             if(id != livroDTO.Id) return BadRequest();
 
-            if(!ModelState.IsValid) return CustomResponse();
+            if(!ModelState.IsValid) return CustomResponse(ModelState);
 
             var livro = _mapper.Map<Livro>(livroDTO);
             await _livroService.Atualizar(livro);
