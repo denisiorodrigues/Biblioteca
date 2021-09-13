@@ -14,7 +14,7 @@ namespace Biblioteca.Data.Mappings
             builder.Property(p => p.Resumo).IsRequired().HasColumnType("varchar(500)");
             builder.Property(p => p.Exemplares).IsRequired();
             builder.Property(p => p.Publicado).IsRequired();
-            builder.Property(p => p.Imagem).HasColumnType("varchar(255)").IsRequired();
+            builder.Property(p => p.Imagem).HasColumnType("varchar(255)");
             builder.Property(p => p.Situacao).IsRequired();
 
             builder.HasMany(p => p.Emprestimos)
