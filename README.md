@@ -28,6 +28,11 @@ dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m 
 dotnet-ef database update -v
 ```
 
+**Criando uma nova migration com CLI**
+```
+dotnet ef --startup-project ../Biblioteca.API/ migrations add <NOME DA MIGRAÇÃO>
+```
+
 # Dependencias
 Microsoft.EntityFrameworkCore.Sqlite
 ```
