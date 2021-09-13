@@ -31,7 +31,7 @@ namespace Biblioteca.Business.Services
             _notificador.Handle(new Notificacao(mensagem));
         }
 
-        protected bool ExecutarValidaao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE: Entity
+        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE: Entity
         {
             var validator = validacao.Validate(entidade);
 

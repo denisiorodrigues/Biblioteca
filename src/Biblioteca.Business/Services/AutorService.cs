@@ -2,6 +2,7 @@
 using Biblioteca.Business.Interfaces.Repository;
 using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Models;
+using Biblioteca.Business.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace Biblioteca.Business.Services
                 return;
             }
             
+            if(ExecutarValidacao(new AutorValidation(), autor))
+            {
+                return ;
+            }
+            
             await _autorRepository.Adicionar(autor);
         }
 
@@ -37,7 +43,12 @@ namespace Biblioteca.Business.Services
                 Notificar($"Já existe um autor cadastrado com o nome {autor.Nome.ToUpper()}");
                 return;
             }
-            
+
+            if(ExecutarValidacao(new AutorValidation(), autor))
+            {
+                return ;
+            }
+
             await _autorRepository.Atualizar(autor);
         }
 

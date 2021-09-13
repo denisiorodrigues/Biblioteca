@@ -25,7 +25,7 @@ namespace Biblioteca.Business.Services
 
         public async Task Adicionar(Aluno aluno)
         {
-            if (!ExecutarValidaao(new AlunoValidation(), aluno) && !ExecutarValidaao(new EnderecoValidation(), aluno.Endereco))
+            if (!ExecutarValidacao(new AlunoValidation(), aluno) && !ExecutarValidacao(new EnderecoValidation(), aluno.Endereco))
             {
                 return;
             }
@@ -41,18 +41,17 @@ namespace Biblioteca.Business.Services
 
         public async Task Atualizar(Aluno aluno)
         {
-            if (!ExecutarValidaao(new AlunoValidation(), aluno) && !ExecutarValidaao(new EnderecoValidation(), aluno.Endereco))
+            if (!ExecutarValidacao(new AlunoValidation(), aluno) && !ExecutarValidacao(new EnderecoValidation(), aluno.Endereco))
             {
                 return;
             }
 
-            //TODO: Verificar se precisa atuialziar o endereço
             await _alunoRepository.Atualizar(aluno);
         }
 
         public async Task AtualizarEndereco(Endereco endereco)
         {
-            if (!ExecutarValidaao(new EnderecoValidation(), endereco))
+            if (!ExecutarValidacao(new EnderecoValidation(), endereco))
             {
                 return;
             }
