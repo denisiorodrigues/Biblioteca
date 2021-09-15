@@ -36,6 +36,6 @@ namespace Biblioteca.API.DTO
         public string Estado { get; set; }
 
         [HiddenInput]
-        public Guid FornecedorId { get; set; }
+        public Guid AlunoId { get; set; }
     }
 }

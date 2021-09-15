@@ -4,6 +4,7 @@ using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Models;
 using Biblioteca.Business.Validations;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Biblioteca.Business.Services
@@ -11,6 +12,7 @@ namespace Biblioteca.Business.Services
     public class LivroService : BaseService, ILivroService
     {
         private readonly ILivroRepository _livroRepository;
+        private readonly IEscritoRepository _escritoRepository;
 
         public LivroService(ILivroRepository livroRepository, 
                             IEscritoRepository escritoRepository,
@@ -18,6 +20,7 @@ namespace Biblioteca.Business.Services
             : base(notificador)
         {
             _livroRepository = livroRepository;
+            _escritoRepository = escritoRepository;
         }
 
         public async Task Adicionar(Livro livro)
@@ -35,6 +38,11 @@ namespace Biblioteca.Business.Services
             if(!ExecutarValidacao(new LivroValidation(), livro))
             {
                 return;
+            }
+            
+            if(livro.Autores.Any())
+            {
+                _escritoRepository.RemoverPorLivro(livro.Id);
             }
 
             await _livroRepository.Atualizar(livro);

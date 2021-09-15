@@ -23,10 +23,16 @@ namespace Biblioteca.API.Configuration
             //Repository
             services.AddScoped<ILivroRepository, LivroRepository>();
             services.AddScoped<IAutorRepository, AutorRepository>();
+            services.AddScoped<IAlunoRepository, AlunoRepository>();
+            services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
+            services.AddScoped<IEscritoRepository, EscritoRepository>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 
             //Services
             services.AddScoped<ILivroService, LivroService>();
             services.AddScoped<IAutorService, AutorService>();
+            services.AddScoped<IAlunoService, AlunoService>();
+            services.AddScoped<IEmprestimoService, EmprestimoService>();
 
             return services;
         }

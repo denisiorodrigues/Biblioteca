@@ -11,6 +11,7 @@ namespace Biblioteca.Business.Interfaces.Repository
         Task Adicionar(Escrito escrito);
         Task Atualizar(Escrito escrito);
         Task Remover(Escrito escrito);
+        void RemoverPorLivro(Guid id);
         Task<IEnumerable<Escrito>> Buscar(Expression<Func<Escrito, bool>> predicate);
         Task<int> SaveChanges();
     }

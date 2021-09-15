@@ -44,6 +44,12 @@ namespace Biblioteca.Data.Repository
             await SaveChanges();
         }
 
+        //Não foi colocado como assincrono de propósito
+        public void RemoverPorLivro(Guid id)
+        {
+            DbSet.RemoveRange(DbSet.Where(x => x.LivroId == id));
+        }
+
         public async Task<int> SaveChanges()
         {
             return await Context.SaveChangesAsync();
