@@ -11,6 +11,9 @@ namespace Biblioteca.API.Configuration
             CreateMap<Livro, LivroDTO>().ReverseMap();
             CreateMap<Autor, AutorDTO>().ReverseMap();
             CreateMap<Escrito, EscritoDTO>().ReverseMap();
+            CreateMap<Aluno, AlunoDTO>().ReverseMap();
+            CreateMap<Endereco, EnderecoDTO>().ReverseMap();
+            CreateMap<Emprestimo, EmprestimoDTO>().ReverseMap();
         }
     }
 }

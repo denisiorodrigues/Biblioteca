@@ -34,15 +34,14 @@ namespace Biblioteca.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Livro
         [HttpGet]
-        public async Task<IEnumerable<LivroDTO>> GetAlunos()
+        public async Task<IEnumerable<AlunoDTO>> GetAlunos()
         {
-            return _mapper.Map<IEnumerable<LivroDTO>>(await _alunoRepository.ObterTodos());
+            return _mapper.Map<IEnumerable<AlunoDTO>>(await _alunoRepository.ObterTodos());
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<IEnumerable<LivroDTO>>> ObterAluno(Guid id)
+        public async Task<ActionResult<LivroDTO>> ObterAluno(Guid id)
         {
             var alunoDTO = await ObterAlunoEmprestimoEndereco(id);
 
@@ -99,9 +98,10 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(livro);
         }
 
-        private async Task<IEnumerable<AlunoDTO>> ObterAlunoEmprestimoEndereco(Guid id)
+        private async Task<AlunoDTO> ObterAlunoEmprestimoEndereco(Guid id)
         {
-            return _mapper.Map<IEnumerable<AlunoDTO>>(await _alunoRepository.ObterAlunoEmprestimoEndereco(id));
+            var entityResult = await _alunoRepository.ObterAlunoEmprestimoEndereco(id);
+            return _mapper.Map<AlunoDTO>(entityResult);
         }
     }
 }
