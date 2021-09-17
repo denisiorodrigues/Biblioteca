@@ -55,6 +55,24 @@ namespace Biblioteca.Data.Repository
             return await Context.SaveChangesAsync();
         }
 
+        public async Task Adicionar(IEnumerable<Escrito> escritos)
+        {
+            //TODO: Tentar mudar para BulkInsert
+            foreach (var item in escritos)
+            {
+                await Adicionar(item);
+            }
+        }
+
+        public async Task Atualizar(IEnumerable<Escrito> escritos)
+        {
+            //TODO: Tentar mudar para BulkInsert
+            foreach (var item in escritos)
+            {
+                await Atualizar(item);
+            }
+        }
+
         public void Dispose()
         {
             Context?.Dispose();

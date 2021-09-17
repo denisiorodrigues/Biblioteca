@@ -12,6 +12,7 @@ using AutoMapper;
 using Biblioteca.API.DTO;
 using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Interfaces;
+using System.IO;
 
 namespace Biblioteca.API.Controllers
 {
@@ -57,6 +58,14 @@ namespace Biblioteca.API.Controllers
         {
             if(!ModelState.IsValid) return CustomResponse(ModelState);
 
+            var imgNome = Guid.NewGuid() + "_" + livroDTO.Imagem;
+
+            if (!UploadArquivo(livroDTO.ImagemUpload, imgNome))
+            {
+                return CustomResponse();
+            }
+
+            livroDTO.Imagem = imgNome;
             var livro = _mapper.Map<Livro>(livroDTO);
             await _livroService.Adicionar(livro);
 
@@ -86,6 +95,28 @@ namespace Biblioteca.API.Controllers
             await _livroRepository.Remover(id);
 
             return CustomResponse(livro);
+        }
+
+        private bool UploadArquivo(string arquivo, string nome)
+        {
+            if(string.IsNullOrEmpty(arquivo))
+            {
+                NotificarErro("Forneceça uma imagem para este produto!");
+                return false;
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nome);
+
+            if(System.IO.File.Exists(filePath))
+            {
+                NotificarErro("Já existe um arquivo com este nome!");
+                return false;
+            }
+
+            var imagemDataByteArray  = Convert.FromBase64String(arquivo);
+            System.IO.File.WriteAllBytes(filePath, imagemDataByteArray);
+            
+            return true;
         }
 
         private async Task<IEnumerable<LivroDTO>> ObterLivrosAutores(Guid id)

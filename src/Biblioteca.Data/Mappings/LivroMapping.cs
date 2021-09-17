@@ -25,7 +25,7 @@ namespace Biblioteca.Data.Mappings
             //TODO: Delete cascade habilitado
             builder.HasMany(p => p.Autores)
                 .WithOne(p => p.Livro)
-                .HasForeignKey(p => p.AutorId)
+                .HasForeignKey(p => p.LivroId) 
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Livros");

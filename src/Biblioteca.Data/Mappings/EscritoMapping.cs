@@ -13,13 +13,13 @@ namespace Biblioteca.Data.Mappings
         {
             builder.HasKey( k => new { k.AutorId, k.LivroId });
 
-            builder.HasOne(p => p.Autor)
-                .WithMany(p => p.Livros)
-                .HasForeignKey(f => f.AutorId);
+            // builder.HasOne(p => p.Autor)
+            //     .WithMany(p => p.Livros)
+            //     .HasForeignKey(f => f.AutorId);
 
-            builder.HasOne(p => p.Livro)
-                .WithMany(p => p.Autores)
-                .HasForeignKey(f => f.LivroId);
+            // builder.HasOne(p => p.Livro)
+            //     .WithMany(p => p.Autores)
+            //     .HasForeignKey(f => f.LivroId);
 
             builder.ToTable("Escritos");
         }

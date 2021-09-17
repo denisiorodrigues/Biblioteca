@@ -19,8 +19,7 @@ namespace Biblioteca.Business.Validations
                 .Length(3, 500).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength}");
 
             RuleFor(f => f.Exemplares)
-                .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido.")
-                .Equal(0).WithMessage("O campo {PropertyName} presisa ser maior que ZERO.");
+                .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido.");
 
             RuleFor(f => f.Publicado)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido.");

@@ -34,7 +34,7 @@ namespace Biblioteca.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AutorDTO>>> GetAutores()
         {
-            return Ok(_mapper.Map<AutorDTO>( await _autorRepository.ObterTodos()));
+            return Ok(_mapper.Map<IEnumerable<AutorDTO>>( await _autorRepository.ObterTodos()));
         }
 
         [HttpGet("{id:guid}")]
@@ -84,7 +84,7 @@ namespace Biblioteca.API.Controllers
 
             var autor = _mapper.Map<Autor>(autorDTO);
             await _autorService.Adicionar(autor);
-            autorDTO.Id = autorDTO.Id;
+            autorDTO.Id = autor.Id;
 
             //return CreatedAtAction(nameof(GetAutor), new { id = autor.Id }, autor);
             return CustomResponse(autorDTO);

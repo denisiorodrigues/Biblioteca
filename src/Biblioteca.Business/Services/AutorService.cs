@@ -28,7 +28,7 @@ namespace Biblioteca.Business.Services
                 return;
             }
             
-            if(ExecutarValidacao(new AutorValidation(), autor))
+            if(!ExecutarValidacao(new AutorValidation(), autor))
             {
                 return ;
             }
@@ -44,7 +44,7 @@ namespace Biblioteca.Business.Services
                 return;
             }
 
-            if(ExecutarValidacao(new AutorValidation(), autor))
+            if(!ExecutarValidacao(new AutorValidation(), autor))
             {
                 return ;
             }

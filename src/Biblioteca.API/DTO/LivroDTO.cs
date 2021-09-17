@@ -25,6 +25,8 @@ namespace Biblioteca.API.DTO
 
         public string ImagemUpload { get; set; }
 
+        public string Imagem { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é orbigatório")]
         public int Situacao { get; set; }
 

@@ -4,6 +4,7 @@ using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Models;
 using Biblioteca.Business.Validations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,8 +30,11 @@ namespace Biblioteca.Business.Services
             {
                 return;
             }
-                
+
+            InformarDataDevolucaoEmprestimo(livro.Emprestimos);
+            
             await _livroRepository.Adicionar(livro);
+            //await _escritoRepository.Adicionar(livro.Autores);
         }
 
         public async Task Atualizar(Livro livro)
@@ -56,6 +60,17 @@ namespace Biblioteca.Business.Services
             }
 
             await _livroRepository.Remover(id);
+        }
+        
+        private void InformarDataDevolucaoEmprestimo(IEnumerable<Emprestimo> emprestimos)
+        {
+            if(emprestimos != null && emprestimos.Any())
+            {
+                foreach (var emprestimo in emprestimos)
+                {
+                    emprestimo.Devolucao = DateTime.Now.AddDays(7);
+                }
+            }
         }
 
         public void Dispose()

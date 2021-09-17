@@ -12,4 +12,4 @@ namespace Biblioteca.API.DTO
         
         public LivroDTO Livro { get; set; }
     }
-}
+} 
