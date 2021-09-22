@@ -46,7 +46,7 @@ namespace Biblioteca.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<IEnumerable<LivroDTO>>> ObterLivroAutor(Guid id)
         {
-            var livrosDTO = await ObterLivroAutor(id);
+            var livrosDTO = await _livroRepository.ObterPorId(id);
 
             if(livrosDTO == null) NotificarErro("Livro não encontrado");
             
@@ -99,7 +99,29 @@ namespace Biblioteca.API.Controllers
 
             if(!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var livro = _mapper.Map<Livro>(livroDTO);
+            // var livro = _mapper.Map<Livro>(livroDTO);
+            var livro = await _livroRepository.ObterPorId(id);
+            if(livro == null)
+            {
+                NotificarErro("Livro não encontrado.");
+                return CustomResponse();
+            }
+
+            if(livroDTO.ImagemUpload != null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_" + livroDTO.Imagem;
+                if(!UploadArquivo(livroDTO.ImagemUpload, imgPrefixo))
+                {
+                    return CustomResponse();
+                }
+            }
+
+            livro.Imagem = livroDTO.Imagem;
+            livro.Publicado = livroDTO.Publicado;
+            livro.Resumo = livroDTO.Resumo;
+            livro.Situacao = (SituacaoLivroEnum)livroDTO.Situacao;
+            livro.Titulo = livroDTO.Titulo;
+
             await _livroService.Atualizar(livro);
 
             return CustomResponse(livroDTO);

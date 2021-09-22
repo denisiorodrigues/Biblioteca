@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Biblioteca.Business.Models
 {
-    public enum SituaoLivroEnum
+    public enum SituacaoLivroEnum
     {
         Ativo = 1,
         Inativo,

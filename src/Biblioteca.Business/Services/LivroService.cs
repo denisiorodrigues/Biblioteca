@@ -44,7 +44,7 @@ namespace Biblioteca.Business.Services
                 return;
             }
             
-            if(livro.Autores.Any())
+            if(livro.Autores != null && livro.Autores.Any())
             {
                 _escritoRepository.RemoverPorLivro(livro.Id);
             }
