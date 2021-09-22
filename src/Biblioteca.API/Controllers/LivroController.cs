@@ -72,6 +72,26 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(livroDTO);
         }
 
+        
+        [HttpPost("adicionar")]
+        public async Task<ActionResult<LivroDTO>> CadastrarAlternativo(LivroImagemDTO livroDTO)
+        {
+            if(!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var imagemPrefixo = Guid.NewGuid() + "_";
+
+            if (!await UploadArquivoAlternativo(livroDTO.ImagemUpload, imagemPrefixo))
+            {
+                return CustomResponse();
+            }
+
+            livroDTO.Imagem = imagemPrefixo + livroDTO.ImagemUpload.Name;
+            var livro = _mapper.Map<Livro>(livroDTO);
+            await _livroService.Adicionar(livro);
+
+            return CustomResponse(livroDTO);
+        }
+
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<LivroDTO>> Atualizar(Guid id, LivroDTO livroDTO)
         {
@@ -91,10 +111,18 @@ namespace Biblioteca.API.Controllers
             var livro = _livroRepository.ObterPorId(id);
 
             if(livro == null) return NotFound();
-
+    
             await _livroRepository.Remover(id);
 
             return CustomResponse(livro);
+        }
+
+        [RequestSizeLimit(40000000)]
+        //[DisableRequestSizeLimit]
+        [HttpPost("imagem")]
+        public async Task<ActionResult> UploadImagem(IFormFile file)
+        {
+            return Ok(file);
         }
 
         private bool UploadArquivo(string arquivo, string nome)
@@ -116,6 +144,30 @@ namespace Biblioteca.API.Controllers
             var imagemDataByteArray  = Convert.FromBase64String(arquivo);
             System.IO.File.WriteAllBytes(filePath, imagemDataByteArray);
             
+            return true;
+        }
+
+        private async Task<bool> UploadArquivoAlternativo(IFormFile file, string nomePrefixo)
+        {
+            if(file == null || file.Length == 0)
+            {
+                NotificarErro("Forneceça uma imagem para este produto!");
+                return false;
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", nomePrefixo + file.Name);
+
+            if(System.IO.File.Exists(filePath))
+            {
+                NotificarErro("Já existe um arquivo com este nome!");
+                return false;
+            }
+
+            using(var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
             return true;
         }
 

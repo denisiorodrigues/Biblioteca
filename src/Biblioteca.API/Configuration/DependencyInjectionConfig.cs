@@ -5,6 +5,7 @@ using Biblioteca.Business.Notifications;
 using Biblioteca.Business.Services;
 using Biblioteca.Data.Context;
 using Biblioteca.Data.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Biblioteca.API.Configuration
@@ -14,6 +15,8 @@ namespace Biblioteca.API.Configuration
         /**/
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
             // Context
             services.AddScoped<BibliotecaContext>();
 
