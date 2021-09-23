@@ -13,9 +13,11 @@ using Biblioteca.API.DTO;
 using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Interfaces;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Biblioteca.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LivroController : MainController
@@ -35,7 +37,7 @@ namespace Biblioteca.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Livro
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<LivroDTO>> GetLivros()
         {
