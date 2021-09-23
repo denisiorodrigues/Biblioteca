@@ -31,27 +31,14 @@ namespace Biblioteca.API
                 options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"));
             });
             
+            services.AddControllers();
+            
+            services.WebApiConfig();
+
             //Primeira configuração do Automapper
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
-            
-            //Desabilitando a validação automática dos campos para ter mais controle das validações
-            services.Configure<ApiBehaviorOptions>(options => {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-
-            services.AddMvc();
-
             services.ResolveDependencies();
-
-            //Criando as permissões cors
-            // services.AddCors(options => {
-            //     options.AddPolicy("Development",builder => builder.AllowAnyOrigin()
-            //     .AllowAnyMethod()
-            //     .AllowAnyHeader()
-            //     .AllowCredentials());
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,11 +49,12 @@ namespace Biblioteca.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
-            // app.UseCors("Development");
+
+            app.UseMvcConfiguration();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
