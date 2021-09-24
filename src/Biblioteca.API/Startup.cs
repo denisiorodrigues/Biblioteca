@@ -30,6 +30,8 @@ namespace Biblioteca.API
                 //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 options.UseSqlite(Configuration.GetConnectionString("SqliteConnection"));
             });
+
+            services.AddIdentityConfiguration(Configuration);
             
             services.AddControllers();
             
