@@ -6,10 +6,9 @@ namespace Biblioteca.API.Configuration
 {
     public static class ApiConfig
     {
-        [System.Obsolete]
         public static IServiceCollection WebApiConfig(this IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
             //Desabilitando a validação automática dos campos para ter mais controle das validações
             services.Configure<ApiBehaviorOptions>(options => {
@@ -29,6 +28,7 @@ namespace Biblioteca.API.Configuration
 
         public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
+            app.UseRouting();
             app.UseHttpsRedirection();
 
             //uilder.UseMvc();

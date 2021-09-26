@@ -51,8 +51,7 @@ namespace Biblioteca.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
-            app.UseAuthorization();
+            //app.UseAuthorization();
             app.UseAuthentication();
 
             app.UseMvcConfiguration();

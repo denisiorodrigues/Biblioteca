@@ -144,7 +144,7 @@ namespace Biblioteca.API.Controllers
         [RequestSizeLimit(40000000)]
         //[DisableRequestSizeLimit]
         [HttpPost("imagem")]
-        public async Task<ActionResult> UploadImagem(IFormFile file)
+        public ActionResult UploadImagem(IFormFile file)
         {
             return Ok(file);
         }
