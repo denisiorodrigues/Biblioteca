@@ -10,6 +10,8 @@ namespace Biblioteca.API.Configuration
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
+            services.AddControllers();
+            
             //Desabilitando a validação automática dos campos para ter mais controle das validações
             services.Configure<ApiBehaviorOptions>(options => {
                 options.SuppressModelStateInvalidFilter = true;
