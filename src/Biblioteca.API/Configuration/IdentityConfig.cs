@@ -1,4 +1,5 @@
 using Biblioteca.API.Data;
+using Biblioteca.API.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ namespace Biblioteca.API.Configuration
                     options.UseSqlite(configuration.GetConnectionString("SqliteConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddErrorDescriber<IdentityMensagensPortugues>()
             .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
 
