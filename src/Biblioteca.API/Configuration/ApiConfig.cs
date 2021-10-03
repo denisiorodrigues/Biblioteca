@@ -33,8 +33,8 @@ namespace Biblioteca.API.Configuration
             app.UseRouting();
             app.UseHttpsRedirection();
 
-            //uilder.UseMvc();
             //app.UseCors("Development");
+            //app.UseMvc();
 
             return app;
         }

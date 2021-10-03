@@ -1,8 +1,14 @@
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using Biblioteca.API.DTO;
+using Biblioteca.API.Extensions;
 using Biblioteca.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Biblioteca.API.Controllers
 {
@@ -11,13 +17,16 @@ namespace Biblioteca.API.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly JWTSettings _jwtSetting;
 
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManager,
-                              UserManager<IdentityUser> userManager) : base(notificador)
+                              UserManager<IdentityUser> userManager,
+                              IOptions<JWTSettings> jwtSetting) : base(notificador)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _jwtSetting = jwtSetting.Value;
         }   
 
         [HttpPost("regitrar")]
@@ -36,7 +45,7 @@ namespace Biblioteca.API.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return CustomResponse(registerUser);
+                return CustomResponse(GerarJwt());
             }
 
             foreach (var item in result.Errors)
@@ -56,7 +65,7 @@ namespace Biblioteca.API.Controllers
 
             if(result.Succeeded)
             {
-                return CustomResponse(loginUser);
+                return CustomResponse(GerarJwt());
             }
 
             if (result.IsLockedOut)
@@ -67,6 +76,22 @@ namespace Biblioteca.API.Controllers
 
             NotificarErro("Usuário ou senha incorreto");
             return CustomResponse(loginUser);
+        }
+
+        private string GerarJwt()
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSetting.Secret);
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _jwtSetting.Emissor,
+                Audience = _jwtSetting.ValidoEm,
+                Expires = DateTime.UtcNow.AddHours(_jwtSetting.ExpiracaoHoras),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            });
+            
+            var encodedToken = tokenHandler.WriteToken(token);
+            return encodedToken;
         }
     }
 }

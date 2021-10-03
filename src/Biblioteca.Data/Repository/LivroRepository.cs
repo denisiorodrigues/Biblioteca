@@ -44,5 +44,14 @@ namespace Biblioteca.Data.Repository
                         .Where(x => x.Id == id)
                         .ToListAsync();
         }
+
+        public async Task<Livro> ObterLivroAutorEmprestimo(Guid id)
+        {
+            return await Context.Livros
+                .AsNoTracking()
+                .Include(x => x.Autores)
+                .Include(x => x.Emprestimos)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

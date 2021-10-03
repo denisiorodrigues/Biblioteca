@@ -46,9 +46,9 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<IEnumerable<LivroDTO>>> ObterLivroAutor(Guid id)
+        public async Task<ActionResult<LivroDTO>> ObterLivroAutor(Guid id)
         {
-            var livrosDTO = await _livroRepository.ObterPorId(id);
+            var livrosDTO = await ObterLivroAutorEmprestimo(id);
 
             if(livrosDTO == null) NotificarErro("Livro não encontrado");
             
@@ -198,6 +198,11 @@ namespace Biblioteca.API.Controllers
         private async Task<IEnumerable<LivroDTO>> ObterLivrosAutores(Guid id)
         {
             return _mapper.Map<IEnumerable<LivroDTO>>(await _livroRepository.ObterLivrosAutores(id));
+        }
+
+        private async Task<LivroDTO> ObterLivroAutorEmprestimo(Guid id)
+        {
+            return _mapper.Map<LivroDTO>(await _livroRepository.ObterLivroAutorEmprestimo(id));
         }
     }
 }
