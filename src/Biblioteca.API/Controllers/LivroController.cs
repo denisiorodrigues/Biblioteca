@@ -48,7 +48,7 @@ namespace Biblioteca.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<LivroDTO>> ObterLivroAutor(Guid id)
         {
-            var livrosDTO = await ObterLivroAutorEmprestimo(id);
+            var livrosDTO = await ObterLivroAutorEmprestimo(id); 
 
             if(livrosDTO == null) NotificarErro("Livro não encontrado");
             

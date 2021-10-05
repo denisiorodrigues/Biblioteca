@@ -47,11 +47,8 @@ namespace Biblioteca.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+           
             app.UseMvcConfiguration();
-
-            app.UseAuthorization();
-            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

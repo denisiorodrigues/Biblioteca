@@ -18,21 +18,30 @@ namespace Biblioteca.API.Configuration
             });
 
             //Criando as permissões cors
-            services.AddCors(options => {
-                options.AddPolicy("Development",builder => builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
-            });
+            // services.AddCors(options => {
+            //     options.AddPolicy("Development",builder => builder.AllowAnyOrigin()
+            //     .AllowAnyMethod()
+            //     .AllowAnyHeader()
+            //     .AllowCredentials());
+            // });
 
             return services;
         }
 
         public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
-            app.UseRouting();
             app.UseHttpsRedirection();
+            
+            app.UseRouting();
+            
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             //app.UseCors("Development");
             //app.UseMvc();
 
