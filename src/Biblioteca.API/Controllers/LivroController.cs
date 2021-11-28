@@ -14,6 +14,7 @@ using Biblioteca.Business.Interfaces.Services;
 using Biblioteca.Business.Interfaces;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using Biblioteca.API.Extensions;
 
 namespace Biblioteca.API.Controllers
 {
@@ -55,6 +56,7 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(livrosDTO);
         }
 
+        [ClaimsAuthorize("Secretario","Adicionar")]
         [HttpPost]
         public async Task<ActionResult<LivroDTO>> Cadastrar(LivroDTO livroDTO)
         {
@@ -94,6 +96,7 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(livroDTO);
         }
 
+        [ClaimsAuthorize("Secretario","Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<LivroDTO>> Atualizar(Guid id, LivroDTO livroDTO)
         {
@@ -129,6 +132,7 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(livroDTO);
         }
 
+        [ClaimsAuthorize("Secretario","Excluir")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<LivroDTO>> Remover(Guid id)
         {
