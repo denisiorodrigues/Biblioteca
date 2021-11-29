@@ -1,10 +1,12 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Biblioteca.API.DTO;
 using Biblioteca.API.Extensions;
+using Biblioteca.API.Model.login;
 using Biblioteca.Business.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +81,7 @@ namespace Biblioteca.API.Controllers
             return CustomResponse(loginUser);
         }
 
-        private async Task<string> GerarJwt(string email)
+        private async Task<LoginResponseViewModel> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -111,7 +113,20 @@ namespace Biblioteca.API.Controllers
             });
             
             var encodedToken = tokenHandler.WriteToken(token);
-            return encodedToken;
+            
+            var response = new LoginResponseViewModel()
+            {
+              AccessToken = encodedToken,
+              ExpiresIn = TimeSpan.FromHours(_jwtSetting.ExpiracaoHoras).TotalSeconds,
+              User = new UserViewModel()
+              {
+                Id = user.Id,
+                Email = user.Email,
+                Claims = claims.Select(c => new ClaimViewModel() { Type = c.Type, Value = c.Value })
+              }
+            };
+
+            return response;
         }
 
         private static long ToUnixEpochDate(DateTime date)
