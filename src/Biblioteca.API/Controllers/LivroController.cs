@@ -30,8 +30,8 @@ namespace Biblioteca.API.Controllers
         public LivroController(ILivroRepository livroRepository,
                                 ILivroService livroService,
                                 INotificador notificador,
-                                IMapper mapper)
-        :base(notificador)
+                                IMapper mapper,
+                                IUser user):base(notificador, user)
         {
             _livroRepository = livroRepository;
             _livroService = livroService;

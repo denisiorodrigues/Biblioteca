@@ -1,3 +1,4 @@
+using Biblioteca.API.Extensions;
 using Biblioteca.Business.Interfaces;
 using Biblioteca.Business.Interfaces.Repository;
 using Biblioteca.Business.Interfaces.Services;
@@ -36,6 +37,10 @@ namespace Biblioteca.API.Configuration
             services.AddScoped<IAutorService, AutorService>();
             services.AddScoped<IAlunoService, AlunoService>();
             services.AddScoped<IEmprestimoService, EmprestimoService>();
+
+            //Configuração de usuári para toda a aplicação
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
 
             return services;
         }

@@ -25,7 +25,8 @@ namespace Biblioteca.API.Controllers
         public AuthController(INotificador notificador,
                               SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<JWTSettings> jwtSetting) : base(notificador)
+                              IOptions<JWTSettings> jwtSetting,
+                              IUser user) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;

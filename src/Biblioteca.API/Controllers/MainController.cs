@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Biblioteca.API.DTO;
@@ -21,10 +22,21 @@ namespace Biblioteca.API.Controllers
         // }
 
         private readonly INotificador _notificador;
+        private readonly IUser _appUser;
 
-        public MainController(INotificador notificador)
+        protected Guid UsuarioId { get; set; }
+        protected bool UsuarioAutenticado { get; set; }
+        public MainController(INotificador notificador,
+                              IUser appUser)
         {
             _notificador = notificador;
+            _appUser = appUser;
+
+            if(_appUser.IsAuthenticated())
+            {
+              UsuarioId = _appUser.GetUserId();
+              UsuarioAutenticado = true;
+            }
         }
 
         protected bool OperacaoValida()

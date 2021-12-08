@@ -23,8 +23,8 @@ namespace Biblioteca.API.Controllers
         public AutorController(IAutorRepository autorRepository,
                                 IAutorService autorService,
                                 INotificador notificador,
-                                IMapper mapper)
-        :base(notificador)
+                                IMapper mapper,
+                                IUser user) : base(notificador, user)
         {
             _autorRepository = autorRepository;
             _autorService = autorService;

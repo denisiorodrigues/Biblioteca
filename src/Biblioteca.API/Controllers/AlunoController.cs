@@ -26,8 +26,8 @@ namespace Biblioteca.API.Controllers
         public AlunoController(IAlunoRepository alunoRepository,
                                 IAlunoService alunoService,
                                 INotificador notificador,
-                                IMapper mapper)
-        :base(notificador)
+                                IMapper mapper,
+                                IUser user) :base(notificador, user)
         {
             _alunoRepository = alunoRepository;
             _alunoService = alunoService;
