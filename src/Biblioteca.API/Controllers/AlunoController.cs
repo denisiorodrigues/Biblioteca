@@ -15,8 +15,9 @@ using Biblioteca.Business.Interfaces;
 
 namespace Biblioteca.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AlunoController : MainController
     {
         private readonly IAlunoRepository _alunoRepository;

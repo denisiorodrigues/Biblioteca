@@ -15,7 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Biblioteca.API.Controllers
 {
-    [Route("api/conta")]
+    [ApiVersion("2.0")]
+    [ApiVersion("1.0", Deprecated = true)]
+    [Route("api/v{version:apiVersion}/conta")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;

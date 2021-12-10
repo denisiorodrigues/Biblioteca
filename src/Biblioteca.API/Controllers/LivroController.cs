@@ -19,8 +19,9 @@ using Biblioteca.API.Extensions;
 namespace Biblioteca.API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}[controller]")]
     public class LivroController : MainController
     {
         private readonly ILivroRepository _livroRepository;
