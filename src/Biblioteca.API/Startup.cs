@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace Biblioteca.API
 {
@@ -36,12 +39,14 @@ namespace Biblioteca.API
 
             //Primeira configuração do Automapper
             services.AddAutoMapper(typeof(Startup));
+            
+            services.AddSwaggerConfig();
 
             services.ResolveDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -55,6 +60,8 @@ namespace Biblioteca.API
             }
            
             app.UseMvcConfiguration();
+
+            app.UseSwaggerConfig(provider);
 
             app.UseEndpoints(endpoints =>
             {

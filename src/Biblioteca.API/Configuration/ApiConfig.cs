@@ -53,6 +53,14 @@ namespace Biblioteca.API.Configuration
         {
             app.UseHttpsRedirection();
             
+            //Método Convencional
+            // app.UseSwagger();
+            // app.UseSwaggerUI(x => 
+            // {
+            //   x.SwaggerEndpoint("/swagger/v1/swagger.json", "Biblioteca API V1");
+            //   x.RoutePrefix = string.Empty;
+            // });
+
             app.UseRouting();
             
             app.UseCors(x => x
