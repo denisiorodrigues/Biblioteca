@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -20,6 +21,38 @@ namespace Biblioteca.API.Configuration
               //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Biblioteca", Version = "V1"});
               //Personalizada
                 c.OperationFilter<SwaggerDefaultValues>();
+
+                /* versão 4 (antiga) do swagger */
+                // var security = new Dictionary<string, IEnumerable<string>>
+                // {
+                //   {"Bearer", new string[]{} }
+                // };
+                
+                /* versão 5 (antiga) do swagger */
+                var security = new OpenApiSecurityRequirement()
+                {
+                  {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new List<string>()
+                  }
+                };
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                  Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                  Name = "Authorization",
+                  In = ParameterLocation.Header,
+                  Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(security);
             });
 
             return services;

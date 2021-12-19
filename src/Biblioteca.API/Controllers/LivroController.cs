@@ -21,7 +21,7 @@ namespace Biblioteca.API.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class LivroController : MainController
     {
         private readonly ILivroRepository _livroRepository;
@@ -48,6 +48,7 @@ namespace Biblioteca.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [ClaimsAuthorize("Secretario","Consultar")]
         public async Task<ActionResult<LivroDTO>> ObterLivroAutor(Guid id)
         {
             var livrosDTO = await ObterLivroAutorEmprestimo(id); 
