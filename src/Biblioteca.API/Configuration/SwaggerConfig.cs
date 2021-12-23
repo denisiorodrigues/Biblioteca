@@ -24,6 +24,16 @@ namespace Biblioteca.API.Configuration
               //Personalizada
                 c.OperationFilter<SwaggerDefaultValues>();
 
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                  Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                  Name = "Authorization",
+                  Scheme = "Bearer",
+                  BearerFormat = "JWT",
+                  In = ParameterLocation.Header,
+                  Type = SecuritySchemeType.ApiKey
+                });
+
                 /* versão 4 (antiga) do swagger */
                 // var security = new Dictionary<string, IEnumerable<string>>
                 // {
@@ -31,7 +41,8 @@ namespace Biblioteca.API.Configuration
                 // };
                 
                 /* versão 5 (antiga) do swagger */
-                var security = new OpenApiSecurityRequirement()
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                   {
                     new OpenApiSecurityScheme
@@ -42,19 +53,9 @@ namespace Biblioteca.API.Configuration
                             Id = "Bearer"
                         }
                     },
-                    new List<string>()
+                    new string[] {}
                   }
-                };
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                  Description = "Insira o token JWT desta maneira: Bearer {seu token}",
-                  Name = "Authorization",
-                  In = ParameterLocation.Header,
-                  Type = SecuritySchemeType.ApiKey
                 });
-
-                c.AddSecurityRequirement(security);
             });
 
             return services;
