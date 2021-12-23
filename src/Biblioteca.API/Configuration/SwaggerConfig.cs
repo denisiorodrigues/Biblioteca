@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -60,7 +62,8 @@ namespace Biblioteca.API.Configuration
 
         public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
-            
+            //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
+
             /*
                 Vai dar um FOREACh e navegar em todas as versões configuradas 
                 e vai gerar uma página para cada versão de
@@ -70,7 +73,7 @@ namespace Biblioteca.API.Configuration
             app.UseSwaggerUI(option => {
                 foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    option.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    option.SwaggerEndpoint($"{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
             });
 
@@ -140,6 +143,29 @@ namespace Biblioteca.API.Configuration
 
             parameter.Required |= description.IsRequired;
         }
+    }
+  }
+
+  // Adicionando um middle para mostrar o swagger se estiver logado
+  public class SwaggerAuthorizedMiddleware
+  {
+    private readonly RequestDelegate _next;
+
+    public SwaggerAuthorizedMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    
+    public async Task Invoke(HttpContext context)
+    {
+      if(context.Request.Path.StartsWithSegments("/swagger") 
+        && !context.User.Identity.IsAuthenticated)
+      {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return;
+      }
+
+      await _next.Invoke(context);
     }
   }
 }
