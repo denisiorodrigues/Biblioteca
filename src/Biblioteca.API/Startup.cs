@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Biblioteca.API.Extensions;
 
 namespace Biblioteca.API
 {
@@ -59,6 +60,8 @@ namespace Biblioteca.API
                app.UseHsts();
             }
            
+            app.UseMiddleware<ExceptionMiddleware>();
+            
             app.UseMvcConfiguration();
 
             app.UseSwaggerConfig(provider);
